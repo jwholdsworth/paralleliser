@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,10 +13,8 @@ import (
 var wg = sync.WaitGroup{}
 
 func main() {
-	command := os.Getenv("COMMAND")
-	if command == "" {
-		log.Fatal("COMMAND environment variable not specified")
-	}
+	command := flag.String("c", "", "The command to run in each subdirectory")
+	flag.Parse()
 
 	entries, err := os.ReadDir("./")
 
@@ -29,7 +28,7 @@ func main() {
 		}
 		log.Println("Running in folder", entry.Name())
 		wg.Add(1)
-		go runCommandInFolder(command, entry.Name())
+		go runCommandInFolder(*command, entry.Name())
 	}
 	wg.Wait()
 }
@@ -37,7 +36,7 @@ func main() {
 func runCommandInFolder(command string, folder string) {
 	var out bytes.Buffer
 
-	cmd := exec.Command("/bin/sh", "-c", command)
+	cmd := exec.Command(os.Getenv("SHELL"), "-c", command)
 	cmd.Stdout = &out
 	cmd.Dir = fmt.Sprintf("./%s", folder)
 	err := cmd.Run()
@@ -45,7 +44,9 @@ func runCommandInFolder(command string, folder string) {
 		log.Panic(err)
 	}
 
-	fmt.Println("Output from", folder)
-	fmt.Println(out.String())
+	var output = fmt.Sprintf("Output from %s\n", folder)
+	output += fmt.Sprintf(out.String())
+
+	fmt.Println(output)
 	wg.Done()
 }
