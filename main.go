@@ -16,6 +16,10 @@ func main() {
 	command := flag.String("c", "", "The command to run in each subdirectory")
 	flag.Parse()
 
+	if *command == "" {
+		log.Fatal("You need to specify a command to run with the -c flag")
+	}
+
 	entries, err := os.ReadDir("./")
 
 	if err != nil {
