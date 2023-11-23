@@ -48,9 +48,12 @@ func runCommandInFolder(command string, folder string) {
 		log.Panic(err)
 	}
 
-	var output = fmt.Sprintf("Output from %s\n", folder)
-	output += fmt.Sprintf(out.String())
+	var output string
+	output += "--------------------------------------------------------------------------------\n"
+	output += fmt.Sprintf("Output from %s\n", folder)
+	output += out.String()
+	output += "--------------------------------------------------------------------------------\n\n"
 
-	fmt.Println(output, "\n\n")
+	fmt.Println(output)
 	wg.Done()
 }
