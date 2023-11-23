@@ -39,13 +39,15 @@ func main() {
 
 func runCommandInFolder(command string, folder string) {
 	var out bytes.Buffer
+	var err bytes.Buffer
 
 	cmd := exec.Command(os.Getenv("SHELL"), "-c", command)
 	cmd.Stdout = &out
+	cmd.Stderr = &err
 	cmd.Dir = fmt.Sprintf("./%s", folder)
-	err := cmd.Run()
-	if err != nil {
-		log.Panic(err)
+	error := cmd.Run()
+	if error != nil {
+		log.Fatalf("Error running in %s. Error was %s", folder, err.String())
 	}
 
 	var output string
