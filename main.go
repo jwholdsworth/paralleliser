@@ -47,6 +47,6 @@ func runCommandInFolder(command string, folder string) {
 	var output = fmt.Sprintf("Output from %s\n", folder)
 	output += fmt.Sprintf(out.String())
 
-	fmt.Println(output)
+	fmt.Println(output, "\n\n")
 	wg.Done()
 }
