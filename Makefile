@@ -1,2 +1,13 @@
-build:
+build-local:
 	go build -o ~/bin -ldflags="-s -w" ./...
+
+build: build-linux build-mac build-windows
+
+build-linux:
+	GOOS=linux GOARCH=amd64 go build -o paralleliser-linux -ldflags="-s -w" ./...
+
+build-mac:
+	GOOS=darwin GOARCH=amd64 go build -o paralleliser-mac -ldflags="-s -w" ./...
+
+build-windows:
+	GOOS=windows GOARCH=amd64 go build -o paralleliser.exe -ldflags="-s -w" ./...
