@@ -47,7 +47,7 @@ func runCommandInFolder(command string, folder string) {
 	cmd.Dir = fmt.Sprintf("./%s", folder)
 	error := cmd.Run()
 	if error != nil {
-		log.Fatalf("Error running in %s. Error was %s", folder, err.String())
+		log.Printf("Error running in %s. Error was %s", folder, err.String())
 	}
 
 	var output string
